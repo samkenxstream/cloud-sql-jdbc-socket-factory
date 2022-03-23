@@ -388,6 +388,7 @@ public final class CoreSocketFactory {
   }
 
   private static KeyPair generateRsaKeyPair() {
+    java.time.Instant start = java.time.Instant.now();
     KeyPairGenerator generator;
     try {
       generator = KeyPairGenerator.getInstance("RSA");
@@ -397,8 +398,12 @@ public final class CoreSocketFactory {
               + "available.");
     }
     generator.initialize(RSA_KEY_SIZE);
-    return generator.generateKeyPair();
+    KeyPair kp = generator.generateKeyPair();
+    java.time.Instant stop = java.time.Instant.now();
+    logger.info(String.format("RSA KeyPair took %d ms to generate.", java.time.Duration.between(start, stop).toMillis()));
+    return kp;
   }
+  
 
   private static String getVersion() {
     try {
